@@ -20,19 +20,18 @@ Pythonで、マークダウンを含むWebページをスクレイピングし�
 - Pygments==2.6.1
 
 Windows環境の場合、`pdfkit`を利用する際に事前に`wkhtmltopdf`をインストールする必要があります。
-[https://wkhtmltopdf.org/downloads.html](https://wkhtmltopdf.org/downloads.html)から64bit版をインストールします。
+[こちらのサイト](https://wkhtmltopdf.org/downloads.html)から64bit版をインストールします。
 パスを通していいですし、今回するようにPythonのコードで直接実行ファイルのパスを指定してもいいです。
 
 またコードブロックにハイライトを付けるため、`Pygments`を使用します。
 
 フォルダ構成は以下のようにします。
 
-```console
+```
    app
     |- file
     |   |- source
     |   |   └─ source.md  ← 元となるマークダウン
-    |   |- css            → Pygmentsの出力先
     |   └─ pdf            ← PDF出力先
     |- app.py
     └─requirements.txt
@@ -153,6 +152,11 @@ def mark_to_html():
 ```
 
 Markdownには以下のような拡張機能があり、オブジェクを作成する際に拡張機能をリストにして指定することができます。
+
+```python
+md = markdown.Markdown(extensions=["拡張機能"])
+```
+
 使えそうなものだけ抜粋しています。すべての拡張に関しては以下から。
 
 https://python-markdown.github.io/extensions/#officially-supported-extensions
@@ -172,6 +176,20 @@ https://python-markdown.github.io/extensions/#officially-supported-extensions
 これ以外にもサードパーティー製の拡張機能を使用することもできます。
 
 https://github.com/Python-Markdown/markdown/wiki/Third-Party-Extensions
+
+コードのハイライトにしようしている`Pygments`では、適用するスタイル名とクラス名を指定しています。
+
+```python
+style = HtmlFormatter(style="スタイル名").get_style_defs("クラス名")
+```
+
+適用できるスタイルは`Pygments`のコマンドラインツールから取得することができます。
+
+```console
+> pygmentize -L styles
+```
+
+クラス名は、`markdown`で`codehilite`を有効にすると`<code class="codehilite">`と出力されるので、`codehilite`に設定します。
 
 ## HTML → PDF
 
